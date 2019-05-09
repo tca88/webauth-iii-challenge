@@ -8,7 +8,7 @@ exports.up = function(knex) {
       .unique();
     users.string("password", 128).notNullable();
     users
-      .string("department", 128)
+      .string("departments", 128)
       .notNullable()
       .defaultTo("student");
   });

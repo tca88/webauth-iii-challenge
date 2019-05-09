@@ -21,6 +21,7 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   let { username, password } = req.body;
+
   Users.findBy({ username })
     .first()
     .then(user => {
@@ -28,7 +29,9 @@ router.post("/login", (req, res) => {
         const token = generateToken(user); // <<<<<<<<<<<<<<<<<<<<<<<<
         res.status(200).json({
           message: `Welcome ${user.username}!`,
-          token
+          token,
+          username: user.username,
+          departments: user.departments
         });
       } else {
         res.status(401).json({ message: "Invalid Credentials" });
@@ -43,7 +46,7 @@ function generateToken(user) {
   const payload = {
     subject: user.id, // what the token is describing
     username: user.username,
-    roles: ["student"] // user.roles
+    departments: user.departments // user.departments
   };
   const options = {
     expiresIn: "1h"
